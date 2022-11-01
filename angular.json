@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "deep-dive": "apps/deep-dive",
+    "deep-dive-e2e": "apps/deep-dive-e2e",
     "flight-admin": "apps/flight-admin",
     "flight-admin-e2e": "apps/flight-admin-e2e",
     "flight-app": "apps/flight-app",
