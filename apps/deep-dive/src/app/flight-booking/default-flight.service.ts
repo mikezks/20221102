@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../app.token';
 import { Flight } from './flight';
 
 @Injectable()
@@ -8,7 +9,10 @@ export class DefaultFlightService {
 
   flights: Flight[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    @Inject(BASE_URL) private baseUrl: string,
+    private http: HttpClient
+  ) { }
 
   load(from: string, to: string): void {
     this.find(from, to).subscribe({
@@ -22,7 +26,7 @@ export class DefaultFlightService {
   }
 
   find(from: string, to: string): Observable<Flight[]> {
-    const url = 'http://www.angular.at/api/flight';
+    const url = this.baseUrl + 'flight';
 
     const headers = new HttpHeaders()
       .set('Accept', 'application/json');
