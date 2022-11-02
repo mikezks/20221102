@@ -1,22 +1,21 @@
 // src/app/app.module.ts
 
-import { NavbarComponent } from './navbar/navbar.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { tap } from 'rxjs';
+import { AboutComponent } from './about/about.component';
+import { AppComponent } from './app.component';
+import { APP_ROUTES } from './app.routes';
+import { BasketComponent } from './basket/basket.component';
+import { Config, ConfigService } from './config.service';
 import { FlightBookingModule } from './flight-booking/flight-booking.module';
 import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RouterModule } from '@angular/router';
-import { APP_ROUTES } from './app.routes';
 import { SharedModule } from './shared/shared.module';
-import { BasketComponent } from './basket/basket.component';
-import { FlightService } from '@flight-workspace/flight-lib';
-import { Config, ConfigService } from './config.service';
-import { tap } from 'rxjs';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
    imports: [
