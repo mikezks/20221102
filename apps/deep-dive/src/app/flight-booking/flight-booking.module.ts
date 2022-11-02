@@ -10,6 +10,9 @@ import { FLIGHT_BOOKING_ROUTES } from './flight-booking.routes';
 import { FlightBookingComponent } from './flight-booking.component';
 import { FlightEditComponent } from './flight-edit/flight-edit.component';
 import { FormsModule } from '@angular/forms';
+import { FlightService } from './flight.service';
+import { DummyFlightService } from './dummy-flight.service';
+import { DefaultFlightService } from './default-flight.service';
 
 @NgModule({
   imports: [
@@ -23,6 +26,12 @@ import { FormsModule } from '@angular/forms';
     PassengerSearchComponent,
     FlightBookingComponent,
     FlightEditComponent
+  ],
+  providers: [
+    {
+      provide: FlightService,
+      useClass: DefaultFlightService
+    }
   ],
   exports: [
     FlightSearchComponent
