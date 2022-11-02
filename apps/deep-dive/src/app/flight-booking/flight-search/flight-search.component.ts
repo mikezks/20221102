@@ -1,6 +1,6 @@
 // src/app/flight-search/flight-search.component.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { DummyFlightService } from '../dummy-flight.service';
 import { Flight } from '../flight';
 import { FlightService } from '../flight.service';
@@ -23,10 +23,11 @@ export class FlightSearchComponent implements OnInit {
   to = 'Graz';
   selectedFlight: Flight | null = null;
   delayFilter = false;
+  consumeFlightService: FlightService = this.flightServices[1];
 
   get flights() {
     // We will refactor this to an observable in a later exercise!
-    return this.flightService.flights;
+    return this.consumeFlightService.flights;
   }
 
   basket: { [key: number]: boolean } = {
@@ -34,7 +35,8 @@ export class FlightSearchComponent implements OnInit {
     5: true
   };
 
-  constructor(private flightService: FlightService) {
+  constructor(@Inject(FlightService) private flightServices: FlightService[]) {
+
   }
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method, @typescript-eslint/no-empty-function
@@ -42,7 +44,7 @@ export class FlightSearchComponent implements OnInit {
   }
 
   search(): void {
-    this.flightService.load(this.from, this.to);
+    this.consumeFlightService.load(this.from, this.to);
   }
 
   select(f: Flight): void {
@@ -50,7 +52,7 @@ export class FlightSearchComponent implements OnInit {
   }
 
   delay(): void {
-    this.flightService.delay();
+    this.consumeFlightService.delay();
   }
 
 }
