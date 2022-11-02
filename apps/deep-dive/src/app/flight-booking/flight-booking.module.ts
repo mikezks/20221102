@@ -39,8 +39,8 @@ import { PassengerSearchComponent } from './passenger-search/passenger-search.co
       },
       deps: [HttpClient]
     } */
-    { provide: FlightService, useClass: DefaultFlightService, multi: true },
-    { provide: FlightService, useClass: DummyFlightService, multi: true }
+    /* { provide: FlightService, useClass: DefaultFlightService, multi: true },
+    { provide: FlightService, useClass: DummyFlightService, multi: true } */
   ],
   exports: [
     FlightSearchComponent

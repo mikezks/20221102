@@ -23,11 +23,10 @@ export class FlightSearchComponent implements OnInit {
   to = 'Graz';
   selectedFlight: Flight | null = null;
   delayFilter = false;
-  consumeFlightService: FlightService = this.flightServices[1];
 
   get flights() {
     // We will refactor this to an observable in a later exercise!
-    return this.consumeFlightService.flights;
+    return this.flightService.flights;
   }
 
   basket: { [key: number]: boolean } = {
@@ -35,7 +34,7 @@ export class FlightSearchComponent implements OnInit {
     5: true
   };
 
-  constructor(@Inject(FlightService) private flightServices: FlightService[]) {
+  constructor(private flightService: FlightService) {
 
   }
 
@@ -44,7 +43,7 @@ export class FlightSearchComponent implements OnInit {
   }
 
   search(): void {
-    this.consumeFlightService.load(this.from, this.to);
+    this.flightService.load(this.from, this.to);
   }
 
   select(f: Flight): void {
@@ -52,7 +51,7 @@ export class FlightSearchComponent implements OnInit {
   }
 
   delay(): void {
-    this.consumeFlightService.delay();
+    this.flightService.delay();
   }
 
 }

@@ -5,14 +5,15 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BASE_URL } from '../app.token';
+import { ConfigService } from '../config.service';
 import { DefaultFlightService } from './default-flight.service';
 import { DummyFlightService } from './dummy-flight.service';
 import { Flight } from './flight';
 
 @Injectable({
   providedIn: 'root',
-  useFactory: (baseUrl: string, http: HttpClient) => {
-    if (environment.dummyFlightService) {
+  useFactory: (baseUrl: string, http: HttpClient, cfgService: ConfigService) => {
+    if (cfgService.config.value.useDummy) {
       return new DummyFlightService();
     } else {
       return new DefaultFlightService(baseUrl, http);
@@ -20,7 +21,8 @@ import { Flight } from './flight';
   },
   deps: [
     [new Inject(BASE_URL)],
-    HttpClient
+    HttpClient,
+    ConfigService
   ]
 })
 export abstract class FlightService {
