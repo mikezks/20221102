@@ -3,9 +3,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../app.token';
 import { Flight } from './flight';
+import { FlightService } from './flight.service';
 
 @Injectable()
-export class DefaultFlightService {
+export class DefaultFlightService implements FlightService {
 
   flights: Flight[] = [];
 

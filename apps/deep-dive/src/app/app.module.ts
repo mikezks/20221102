@@ -39,8 +39,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
       provide: APP_INITIALIZER,
       useFactory: (http: HttpClient, cfgService: ConfigService) => () =>
           http.get<Config>('./assets/runtime/config.json').pipe(
-          tap(config => cfgService.config.next(config))
-        ),
+            tap(config => cfgService.config.next(config))
+          ),
       deps: [HttpClient, ConfigService],
       multi: true
     }
