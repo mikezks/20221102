@@ -16,6 +16,8 @@ export class FlightEditComponent implements OnInit {
   id = 0;
   showDetails = false;
 
+  customForm: FormGroup<>;
+
   editForm = this.fb.nonNullable.group({
     id: [0],
     from: ['Graz', [
@@ -48,7 +50,8 @@ export class FlightEditComponent implements OnInit {
   }
 
   save(): void {
-    console.log('value', this.editForm.value);
+    console.log('value (w/o disabled)', this.editForm.value);
+    console.log('value (all props)', this.editForm.getRawValue());
     console.log('valid', this.editForm.valid);
     console.log('dirty', this.editForm.dirty);
     console.log('touched', this.editForm.touched);
