@@ -1,8 +1,9 @@
 // src/app/flight-booking/flight-edit/flight-edit.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Address } from '../../shared/controls/address/address.component';
 import { validateCity, validateCityWithParams } from '../../shared/validation/city-validator';
 
 @Component({
@@ -16,9 +17,15 @@ export class FlightEditComponent implements OnInit {
   id = 0;
   showDetails = false;
 
-  customForm: FormGroup<>;
+  // customForm: FormGroup<>;
 
-  editForm = this.fb.nonNullable.group({
+  editForm: FormGroup<{
+    id: FormControl<number>,
+    from: FormControl<string>,
+    to: FormControl<string>,
+    date: FormControl<string>,
+    address: FormControl<Address>
+  }> = this.fb.nonNullable.group({
     id: [0],
     from: ['Graz', [
       Validators.required,
@@ -30,7 +37,14 @@ export class FlightEditComponent implements OnInit {
         'Hamburg', 'Wien', 'London'
       ])
     ]],
-    date: [new Date().toISOString()]
+    date: [new Date().toISOString()],
+    address: [{
+      street: 'Main Street',
+      number: '102/6/3',
+      zip: '1234567CD',
+      city: 'Gotham City',
+      country: 'USA'
+    }]
   }, { updateOn: 'change' });
 
   constructor(

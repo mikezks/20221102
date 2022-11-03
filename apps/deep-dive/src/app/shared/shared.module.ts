@@ -6,15 +6,17 @@ import { DateComponent } from './date/date.component';
 import { CityPipe } from './city.pipe';
 import { StatusColorPipe } from './status-color.pipe';
 import { StatusFilterPipe } from './status-filter.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Added by the CLI
 import { CityValidationDirective } from './validation/city-validation.directive';
+import { AddressComponent } from './controls/address/address.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DateComponent,
@@ -23,7 +25,8 @@ import { CityValidationDirective } from './validation/city-validation.directive'
     StatusFilterPipe,
 
     // Added by the CLI
-    CityValidationDirective
+    CityValidationDirective,
+    AddressComponent,
   ],
   exports: [
     DateComponent,
@@ -34,7 +37,8 @@ import { CityValidationDirective } from './validation/city-validation.directive'
     CommonModule,
 
     // New definition
-    CityValidationDirective
-  ]
+    CityValidationDirective,
+    AddressComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}
