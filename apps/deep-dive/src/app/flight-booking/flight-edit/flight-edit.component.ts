@@ -6,6 +6,20 @@ import { ActivatedRoute } from '@angular/router';
 import { Address } from '../../shared/controls/address/address.component';
 import { validateCity, validateCityWithParams } from '../../shared/validation/city-validator';
 
+
+export type FormGroupWithControls<T> = FormGroup<{
+  [K in keyof T]: FormControl<T[K]>
+}>;
+
+export interface FlightEditForm {
+  id: number;
+  from: string;
+  to: string;
+  date: string;
+  address: Address;
+}
+
+
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-flight-edit',
@@ -19,13 +33,7 @@ export class FlightEditComponent implements OnInit {
 
   // customForm: FormGroup<>;
 
-  editForm: FormGroup<{
-    id: FormControl<number>,
-    from: FormControl<string>,
-    to: FormControl<string>,
-    date: FormControl<string>,
-    address: FormControl<Address>
-  }> = this.fb.nonNullable.group({
+  editForm: FormGroupWithControls<FlightEditForm> = this.fb.nonNullable.group({
     id: [0],
     from: ['Graz', [
       Validators.required,
