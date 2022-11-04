@@ -24,6 +24,10 @@ export class DummyFlightService implements FlightService {
     return of(this.flights);
   }
 
+  findById(): Observable<Flight> {
+    return of(this.flights[0]);
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   delay(): void {
   }
