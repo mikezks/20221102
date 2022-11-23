@@ -22,8 +22,11 @@ export const APP_ROUTES: Routes = [
     {
         path: 'flight-booking',
         loadChildren: () => import('./flight-booking/flight-booking.module')
-          .then(esm => esm.FlightBookingModule)
-    },
+          .then(esm => esm.FlightBookingModule),
+        data: {
+          preloading: true
+        }
+  },
     {
         path: 'about',
         component: AboutComponent
