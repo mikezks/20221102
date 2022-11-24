@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FlightService} from '@flight-workspace/flight-lib';
+import {Flight} from '@flight-workspace/flight-lib';
+import { Store } from '@ngrx/store';
+import * as fromFlightBooking from '../+state';
 import { FlightFilter } from '../entities/flight-filter';
 
 @Component({
@@ -13,10 +15,7 @@ export class FlightSearchComponent implements OnInit {
     to: 'Graz',
     urgent: false
   };
-
-  get flights() {
-    return this.flightService.flights;
-  }
+  flights$ = this.store.select(fromFlightBooking.selectFlights);
 
   // "shopping basket" with selected flights
   basket: { [id: number]: boolean } = {
@@ -24,8 +23,7 @@ export class FlightSearchComponent implements OnInit {
     5: true
   };
 
-  constructor(
-    private flightService: FlightService) {
+  constructor(private store: Store) {
   }
 
   ngOnInit() {
@@ -37,12 +35,30 @@ export class FlightSearchComponent implements OnInit {
 
     if (!this.filter.from || !this.filter.to) return;
 
-    this.flightService
-      .load(this.filter.from, this.filter.to, this.filter.urgent);
+    this.store.dispatch(
+      fromFlightBooking.flightsLoad({
+        from: this.filter.from,
+        to: this.filter.to,
+        urgent: this.filter.urgent
+      })
+    );
   }
 
-  delay(): void {
-    this.flightService.delay();
+  delay(flight: Flight): void {
+    this.store.dispatch(
+      fromFlightBooking.flightUpdate({
+        flight: {
+          ...flight,
+          date: addMinutesToDate(flight.date, 15).toISOString(),
+          delayed: true
+        }
+      })
+    );
   }
 
 }
+
+export const addMinutesToDate = (date: Date | string, minutes: number): Date => {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  return new Date(dateObj.getTime() + minutes * 60 * 1_000);
+};

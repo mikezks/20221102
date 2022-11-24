@@ -1,48 +1,37 @@
 // src/app/default-flight.service.ts
 
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { BASE_URL } from '../app.token';
+import { ConfigService } from '../config.service';
+import { DefaultFlightService } from './default-flight.service';
+import { DummyFlightService } from './dummy-flight.service';
 import { Flight } from './flight';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
+  useFactory: (baseUrl: string, http: HttpClient, cfgService: ConfigService) => {
+    if (cfgService.config.value.useDummy) {
+      return new DummyFlightService();
+    } else {
+      return new DefaultFlightService(baseUrl, http);
+    }
+  },
+  deps: [
+    [new Inject(BASE_URL)],
+    HttpClient,
+    ConfigService
+  ]
 })
-export class FlightService {
+export abstract class FlightService {
 
   // We will refactor this to an observable in a later exercise!
   flights: Flight[] = [];
 
-  constructor(private http: HttpClient) { }
-
-  load(from: string, to: string): void {
-    this.find(from, to).subscribe({
-      next: (flights) => {
-        this.flights = flights;
-      },
-      error: (err) => {
-        console.error('error', err);
-      }
-    });
-  }
-
-  find(from: string, to: string): Observable<Flight[]> {
-    const url = 'http://www.angular.at/api/flight';
-
-    const headers = new HttpHeaders()
-      .set('Accept', 'application/json');
-
-    const params = new HttpParams()
-      .set('from', from)
-      .set('to', to);
-
-    return this.http.get<Flight[]>(url, {headers, params});
-  }
-
-  delay(): void {
-    const date = new Date(this.flights[0].date);
-    date.setTime(date.getTime() + 1000 * 60 * 15);
-    this.flights[0].date = date.toISOString();
-  }
-
+  abstract load(from: string, to: string): void;
+  abstract find(from: string, to: string): Observable<Flight[]>;
+  abstract findById(id: number): Observable<Flight>;
+  abstract delay(): void;
 }

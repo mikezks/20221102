@@ -1,40 +1,45 @@
-<div class="card">
+<ng-container *ngIf="flights$ | async as flights">
 
-  <div class="header">
-    <h2 class="title">Flight Search</h2>
+  <div class="card">
+
+    <div class="header">
+      <h2 class="title">Flight Search</h2>
+    </div>
+    <div class="content">
+
+      <flight-filter
+        [filter]="filter"
+        (searchTrigger)="search($event)">
+
+        <button *ngIf="flights.length" class="btn btn-default flight-filter-button" (click)="delay(flights[0])">
+          Delay 1st Flight
+        </button>
+
+        <div *ngIf="flights.length" class="flight-filter-info">
+          {{flights.length}} flights found!
+        </div>
+      </flight-filter>
+
+    </div>
+
   </div>
-  <div class="content">
 
-    <flight-filter
-      [filter]="filter"
-      (searchTrigger)="search($event)">
+  <div class="row">
+    <div *ngFor="let f of flights">
 
-      <button *ngIf="flights.length" class="btn btn-default flight-filter-button" (click)="delay()">
-        Delay 1st Flight
-      </button>
-
-      <div *ngIf="flights.length" class="flight-filter-info">
-        {{flights.length}} flights found!
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <flight-card
+          [item]="f"
+          [(selected)]="basket[f.id]">
+        </flight-card>
       </div>
-    </flight-filter>
-
-  </div>
-</div>
-
-<div class="row">
-  <div *ngFor="let f of flights">
-
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-      <flight-card
-        [item]="f"
-        [(selected)]="basket[f.id]">
-      </flight-card>
     </div>
   </div>
-</div>
 
-<div class="card">
-  <div class="content">
-    <pre>{{ basket | json }}</pre>
+  <div class="card">
+    <div class="content">
+      <pre>{{ basket | json }}</pre>
+    </div>
   </div>
-</div>
+
+</ng-container>

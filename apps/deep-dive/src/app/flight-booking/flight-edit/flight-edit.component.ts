@@ -1,7 +1,24 @@
 // src/app/flight-booking/flight-edit/flight-edit.component.ts
 
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Address } from '../../shared/controls/address/address.component';
+import { validateCity, validateCityWithParams } from '../../shared/validation/city-validator';
+
+
+export type FormGroupWithControls<T> = FormGroup<{
+  [K in keyof T]: FormControl<T[K]>
+}>;
+
+export interface FlightEditForm {
+  id: number;
+  from: string;
+  to: string;
+  date: string;
+  address: Address;
+}
+
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -14,7 +31,42 @@ export class FlightEditComponent implements OnInit {
   id = 0;
   showDetails = false;
 
-  constructor(private route: ActivatedRoute) { }
+  // customForm: FormGroup<>;
+
+  editForm: FormGroupWithControls<FlightEditForm> = this.fb.nonNullable.group({
+    id: [0],
+    from: ['Graz', [
+      Validators.required,
+      validateCity
+    ]],
+    to: ['Hamburg', [
+      Validators.required,
+      validateCityWithParams([
+        'Hamburg', 'Wien', 'London'
+      ])
+    ]],
+    date: [new Date().toISOString()],
+    address: [{
+      street: 'Main Street',
+      number: '102/6/3',
+      zip: '1234567CD',
+      city: 'Gotham City',
+      country: 'USA'
+    }]
+  }, { updateOn: 'change' });
+
+  constructor(
+    private route: ActivatedRoute,
+    private fb: FormBuilder) {
+
+    this.editForm.valueChanges.subscribe(
+      console.log
+    );
+
+    this.route.data.subscribe(
+      data => this.editForm.patchValue(data['flight'])
+    );
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(p => {
@@ -23,4 +75,11 @@ export class FlightEditComponent implements OnInit {
     });
   }
 
+  save(): void {
+    console.log('value (w/o disabled)', this.editForm.value);
+    console.log('value (all props)', this.editForm.getRawValue());
+    console.log('valid', this.editForm.valid);
+    console.log('dirty', this.editForm.dirty);
+    console.log('touched', this.editForm.touched);
+  }
 }

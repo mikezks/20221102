@@ -1,2 +1,14 @@
 <!-- src/app/home/home.component.html -->
-<h1>Welcome!</h1>
+
+<h1>Welcome{{ userName ? ', ' + userName : ''}}!</h1>
+
+<div *ngIf="needsLogin" class="alert alert-danger">
+  Please login to be allowed to navigate to protected routes.
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <button class="btn btn-default" (click)="login()">Login</button>
+    <button class="btn btn-default" (click)="logout()">Logout</button>
+  </div>
+</div>
