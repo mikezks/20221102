@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Flight, FlightService} from '@flight-workspace/flight-lib';
+import {Flight} from '@flight-workspace/flight-lib';
 import { Store } from '@ngrx/store';
 import * as fromFlightBooking from '../+state';
 import { FlightFilter } from '../entities/flight-filter';
@@ -15,7 +15,7 @@ export class FlightSearchComponent implements OnInit {
     to: 'Graz',
     urgent: false
   };
-  flights$ = this.store.select(state => state.flightBooking.flights);
+  flights$ = this.store.select(fromFlightBooking.selectFlights);
 
   // "shopping basket" with selected flights
   basket: { [id: number]: boolean } = {
@@ -23,9 +23,7 @@ export class FlightSearchComponent implements OnInit {
     5: true
   };
 
-  constructor(
-    private flightService: FlightService,
-    private store: Store<fromFlightBooking.FlightBookingRootState>) {
+  constructor(private store: Store) {
   }
 
   ngOnInit() {
@@ -37,13 +35,13 @@ export class FlightSearchComponent implements OnInit {
 
     if (!this.filter.from || !this.filter.to) return;
 
-    this.flightService
-      .find(this.filter.from, this.filter.to, this.filter.urgent)
-      .subscribe(
-        flights => this.store.dispatch(
-          fromFlightBooking.flightsLoaded({ flights })
-        )
-      );
+    this.store.dispatch(
+      fromFlightBooking.flightsLoad({
+        from: this.filter.from,
+        to: this.filter.to,
+        urgent: this.filter.urgent
+      })
+    );
   }
 
   delay(flight: Flight): void {
