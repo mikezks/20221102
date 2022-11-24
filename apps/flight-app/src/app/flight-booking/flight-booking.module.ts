@@ -7,6 +7,7 @@ import {FlightBookingComponent} from './flight-booking.component';
 import {FLIGHT_BOOKING_ROUTES} from './flight-booking.routes';
 import {FlightCardComponent} from './flight-card/flight-card.component';
 import {FlightEditComponent} from './flight-edit/flight-edit.component';
+import { FlightFilterComponent } from './flight-filter/flight-filter.component';
 import {FlightSearchComponent} from './flight-search/flight-search.component';
 import {PassengerSearchComponent} from './passenger-search/passenger-search.component';
 
@@ -15,7 +16,8 @@ import {PassengerSearchComponent} from './passenger-search/passenger-search.comp
     CommonModule,
     FormsModule,
     SharedModule.forChild(),
-    RouterModule.forChild(FLIGHT_BOOKING_ROUTES)
+    RouterModule.forChild(FLIGHT_BOOKING_ROUTES),
+    FlightFilterComponent
   ],
   declarations: [
     FlightSearchComponent,

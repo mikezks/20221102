@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FlightService} from '@flight-workspace/flight-lib';
+import { FlightFilter } from '../entities/flight-filter';
 
 @Component({
   selector: 'flight-search',
@@ -7,10 +8,11 @@ import {FlightService} from '@flight-workspace/flight-lib';
   styleUrls: ['./flight-search.component.css']
 })
 export class FlightSearchComponent implements OnInit {
-
-  from = 'Hamburg'; // in Germany
-  to = 'Graz'; // in Austria
-  urgent = false;
+  filter = {
+    from: 'Hamburg',
+    to: 'Graz',
+    urgent: false
+  };
 
   get flights() {
     return this.flightService.flights;
@@ -30,11 +32,13 @@ export class FlightSearchComponent implements OnInit {
     console.log('ngOnInit');
   }
 
-  search(): void {
-    if (!this.from || !this.to) return;
+  search(filter: FlightFilter): void {
+    this.filter = filter;
+
+    if (!this.filter.from || !this.filter.to) return;
 
     this.flightService
-      .load(this.from, this.to, this.urgent);
+      .load(this.filter.from, this.filter.to, this.filter.urgent);
   }
 
   delay(): void {
