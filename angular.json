@@ -1,6 +1,10 @@
 {
   "version": 2,
   "projects": {
+    "boarding": "apps/boarding",
+    "boarding-domain": "libs/boarding/domain",
+    "boarding-e2e": "apps/boarding-e2e",
+    "boarding-feature-check-ticket": "libs/boarding/feature-check-ticket",
     "deep-dive": "apps/deep-dive",
     "deep-dive-e2e": "apps/deep-dive-e2e",
     "flight-admin": "apps/flight-admin",
